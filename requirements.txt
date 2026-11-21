@@ -1,0 +1,6 @@
+streamlit
+pandas
+plotly
+pymongo
+python-dotenv==1.2.4
+certifi
