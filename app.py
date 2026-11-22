@@ -32,6 +32,7 @@ try:
 except Exception as exc:
     st.error("Unable to connect to Azure database.")
     st.error(f"Error type: {type(exc).__name__}")
+    st.error(f"Error code: {getattr(exc, 'code', None)}")
     st.stop()
 
 
