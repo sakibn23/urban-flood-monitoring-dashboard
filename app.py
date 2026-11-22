@@ -14,25 +14,26 @@ st.caption("Environmental IoT analytics prototype | Cloud data via Azure Cosmos 
 
 @st.cache_resource
 def get_collection():
-    uri = os.getenv("MONGODB_URI")
+    uri=os.getenv("MONGODB_URI")
     if not uri:
         raise ValueError("MONGODB_URI environment variable is not set.")
-
     client = MongoClient(
-        uri,
-        serverSelectionTimeoutMS=10000,
-        tlsCAFile=certifi.where()
-    )
-
+    uri,
+    serverSelectionTimeoutMS=10000,
+    tlsCAFile=certifi.where()
+)
     client.admin.command("ping")
     db = client[os.getenv("MONGODB_DATABASE", "urban_flood_db")]
     return db[os.getenv("MONGODB_COLLECTION", "flood_observations")]
+
 try:
     collection=get_collection()
     raw=list(collection.find({},{"_id":0}))
 except Exception as exc:
-    st.error("Unable to connect to Azure database. Verify the URI, network settings and collection.")
+    st.error("Unable to connect to Azure database.")
+    st.error(f"Error type: {type(exc).__name__}")
     st.stop()
+
 
 if not raw:
     st.warning("The collection is empty. Import flood_observations.json first.")
